@@ -1,31 +1,58 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.8.34511.84
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SFML File 3.0", "SFML File 3.0.vcxproj", "{290CEE68-76C8-410F-8AD2-FB1C7C01FB44}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{290CEE68-76C8-410F-8AD2-FB1C7C01FB44}.Debug|x64.ActiveCfg = Debug|x64
-		{290CEE68-76C8-410F-8AD2-FB1C7C01FB44}.Debug|x64.Build.0 = Debug|x64
-		{290CEE68-76C8-410F-8AD2-FB1C7C01FB44}.Debug|x86.ActiveCfg = Debug|Win32
-		{290CEE68-76C8-410F-8AD2-FB1C7C01FB44}.Debug|x86.Build.0 = Debug|Win32
-		{290CEE68-76C8-410F-8AD2-FB1C7C01FB44}.Release|x64.ActiveCfg = Release|x64
-		{290CEE68-76C8-410F-8AD2-FB1C7C01FB44}.Release|x64.Build.0 = Release|x64
-		{290CEE68-76C8-410F-8AD2-FB1C7C01FB44}.Release|x86.ActiveCfg = Release|Win32
-		{290CEE68-76C8-410F-8AD2-FB1C7C01FB44}.Release|x86.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {1E6E3183-B730-4DD4-9CC7-AA73D5273E57}
-	EndGlobalSection
-EndGlobal
+#include <SFML/Graphics.hpp>
+
+int main()
+{
+    // Create a window with dimensions 800x600
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Green Circle Movement");
+
+    // Define a green circle
+    sf::CircleShape circle(50.f); // Circle radius = 50
+    circle.setFillColor(sf::Color::Red); // Set the circle's color to green
+    circle.setPosition(375.f, 275.f); // Initial position in the center
+
+    // Movement speed
+    const float movementSpeed = 500.0f; // Pixels per second
+
+    // Clock for delta time calculation
+    sf::Clock clock;
+
+    // Main game loop
+    while (window.isOpen())
+    {
+        // Handle events
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        // Calculate delta time
+        float deltaTime = clock.restart().asSeconds();
+
+        // Movement logic with arrow keys
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            circle.move(-movementSpeed * deltaTime, 0);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            circle.move(movementSpeed * deltaTime, 0);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        {
+            circle.move(0, -movementSpeed * deltaTime);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        {
+            circle.move(0, movementSpeed * deltaTime);
+        }
+
+        // Clear, draw, and display
+        window.clear(sf::Color::White); // Clear with black background
+        window.draw(circle);            // Draw the circle
+        window.display();
+    }
+
+    return 0;
+}
